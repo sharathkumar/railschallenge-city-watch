@@ -1,1 +1,3 @@
-json.partial! @responder
+json.responder do
+  json.partial! @responder
+end

@@ -14,11 +14,12 @@ class EmergenciesController < ApplicationController
 
   # GET /emergencies/new
   def new
-    @emergency = Emergency.new
+    page_not_found
   end
 
   # GET /emergencies/1/edit
   def edit
+    page_not_found
   end
 
   # POST /emergencies
@@ -54,17 +55,19 @@ class EmergenciesController < ApplicationController
   # DELETE /emergencies/1
   # DELETE /emergencies/1.json
   def destroy
-    @emergency.destroy
-    respond_to do |format|
-      format.html { redirect_to emergencies_url, notice: 'Emergency was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    page_not_found
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_emergency
-      @emergency = Emergency.find(params[:id])
+      def set_responder
+        begin
+          @responder = Responder.friendly.find(params[:id])
+        rescue
+          page_not_found
+        end
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -74,5 +77,9 @@ class EmergenciesController < ApplicationController
 
     def set_default_response_format
       request.format = :json unless params[:format]
+    end
+
+    def page_not_found
+      render status: 404, json: { message: 'page not found' }
     end
 end

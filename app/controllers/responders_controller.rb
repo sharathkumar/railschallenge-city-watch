@@ -4,7 +4,7 @@ class RespondersController < ApplicationController
   # GET /responders
   # GET /responders.json
   def index
-    @responders = Responder.all
+    @responders = Responder.search(params[:show])
   end
 
   # GET /responders/1
@@ -14,11 +14,12 @@ class RespondersController < ApplicationController
 
   # GET /responders/new
   def new
-    @responder = Responder.new
+    page_not_found
   end
 
   # GET /responders/1/edit
   def edit
+    page_not_found
   end
 
   # POST /responders
@@ -54,17 +55,17 @@ class RespondersController < ApplicationController
   # DELETE /responders/1
   # DELETE /responders/1.json
   def destroy
-    @responder.destroy
-    respond_to do |format|
-      format.html { redirect_to responders_url, notice: 'Responder was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    page_not_found
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_responder
-      @responder = Responder.find(params[:id])
+      begin
+        @responder = Responder.friendly.find(params[:id])
+      rescue
+        page_not_found
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -74,5 +75,9 @@ class RespondersController < ApplicationController
 
     def set_default_response_format
       request.format = :json unless params[:format]
+    end
+
+    def page_not_found
+      render status: 404, json: { message: 'page not found' }
     end
 end

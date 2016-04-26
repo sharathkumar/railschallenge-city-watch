@@ -11,3 +11,6 @@ group :development, :test do
   gem 'database_cleaner', '1.4.1'
   gem 'web-console', '~> 2.0'
 end
+
+# Gemfile
+gem 'friendly_id'
